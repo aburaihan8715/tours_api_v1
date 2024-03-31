@@ -2,12 +2,18 @@ import express from 'express';
 
 import * as tourControllers from '../controllers/tourControllers.js';
 
-// TOUR ROUTES
 const router = express.Router();
+
+// PARAM MIDDLEWARE
+router.param('id', tourControllers.checkId);
+
 router
   .route('/')
   .get(tourControllers.getAllTours)
-  .post(tourControllers.createATour);
+  .post(
+    tourControllers.checkBody,
+    tourControllers.createATour
+  );
 router
   .route('/:id')
   .get(tourControllers.getATour)
