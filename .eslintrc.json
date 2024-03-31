@@ -18,6 +18,18 @@
     "no-return-await": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
+    "import/extensions": "off",
+    "node/no-unsupported-features/es-syntax": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "node/no-unpublished-import": [
+      "error",
+      {
+        "allowModules": [
+          "morgan"
+        ]
+      }
+    ],
     "prefer-destructuring": [
       "error",
       {
@@ -30,9 +42,9 @@
       {
         "argsIgnorePattern": "req|res|next|val"
       }
-    ],
-    "parserOptions": {
-      "sourceType": "module"
-    }
+    ]
+  },
+  "parserOptions": {
+    "sourceType": "module"
   }
 }

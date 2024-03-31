@@ -5,8 +5,8 @@ const __dirname = path.resolve();
 
 const tours = JSON.parse(
   fs.readFileSync(
-    `${__dirname}/src/dev-data/data/tours-simple.json`
-  )
+    `${__dirname}/src/dev-data/data/tours-simple.json`,
+  ),
   // fs.readFileSync(`./src/dev-data/data/tours-simple.json`)
 );
 
@@ -43,10 +43,10 @@ const getAllTours = (req, res) => {
 };
 // CREATE A TOUR
 const createATour = (req, res) => {
-  const newId = tours[tours?.length - 1].id + 1;
+  const newId = tours[tours.length - 1].id + 1;
   // const newTour = Object.assign({ id: newId }, req.body);
   const newTour = { id: newId, ...req.body };
-  tours?.push(newTour);
+  tours.push(newTour);
 
   fs.writeFile(
     `${__dirname}/src/dev-data/data/tours-simple.json`,
@@ -59,13 +59,13 @@ const createATour = (req, res) => {
           tour: newTour,
         },
       });
-    }
+    },
   );
 };
 // GET A TOUR
 const getATour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = tours.find((tour) => tour.id === id);
+  const tour = tours.find((item) => item.id === id);
   res.status(201).json({
     status: 'success',
     data: {
@@ -77,9 +77,9 @@ const getATour = (req, res) => {
 const updateATour = (req, res) => {
   const id = req.params.id * 1;
 
-  const tour = tours.find((tour) => tour.id === id);
+  const tour = tours.find((item) => item.id === id);
   const othersTours = tours.filter(
-    (tour) => tour.id !== id
+    (item) => item.id !== id,
   );
   const updatedTour = { ...tour, ...req.body };
   const updatedTours = [...othersTours, updatedTour];
@@ -95,7 +95,7 @@ const updateATour = (req, res) => {
           tour: updatedTour,
         },
       });
-    }
+    },
   );
 };
 // DELETE A TOUR
@@ -103,7 +103,7 @@ const deleteATour = (req, res) => {
   const id = req.params.id * 1;
 
   const updatedTours = tours.filter(
-    (tour) => tour.id !== id
+    (tour) => tour.id !== id,
   );
 
   fs.writeFile(
@@ -115,7 +115,7 @@ const deleteATour = (req, res) => {
         status: 'success',
         data: null,
       });
-    }
+    },
   );
 };
 
