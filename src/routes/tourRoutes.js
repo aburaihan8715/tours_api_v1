@@ -4,16 +4,10 @@ import * as tourControllers from '../controllers/tourControllers.js';
 
 const router = express.Router();
 
-// PARAM MIDDLEWARE
-router.param('id', tourControllers.checkId);
-
 router
   .route('/')
   .get(tourControllers.getAllTours)
-  .post(
-    tourControllers.checkBody,
-    tourControllers.createATour,
-  );
+  .post(tourControllers.createATour);
 router
   .route('/:id')
   .get(tourControllers.getATour)

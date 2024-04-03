@@ -34,10 +34,4 @@ const deleteAUser = (req, res) => {
   });
 };
 
-export {
-  getAllUsers,
-  createAUser,
-  getAUser,
-  updateAUser,
-  deleteAUser,
-};
+export { getAllUsers, createAUser, getAUser, updateAUser, deleteAUser };
