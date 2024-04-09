@@ -1,6 +1,6 @@
-import 'dotenv/config';
 import mongoose from 'mongoose';
 import { app } from './src/app.js';
+import { mongoAtlasUri, serverPort } from './src/libs/secret.js';
 
 // UNCAUGHT EXCEPTION
 process.on('uncaughtException', (err) => {
@@ -9,14 +9,11 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-mongoose
-  .connect(process.env.MONGO_ATLAS_URI)
-  .then(() => console.log('DB is connected!'));
+mongoose.connect(mongoAtlasUri).then(() => console.log('DB is connected!'));
 
 // console.log(process.env);
-const port = process.env.SERVER_PORT || 5001;
-const server = app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+const server = app.listen(serverPort, () => {
+  console.log(`Server is running at http://localhost:${serverPort}`);
 });
 
 // UNHANDLED REJECTIONS

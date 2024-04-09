@@ -15,6 +15,12 @@ const handleValidationErrorDB = (err) => {
   const message = `Invalid input data: ${errors.join('. ')}`;
   return new AppError(400, message);
 };
+const handleJWTError = () => {
+  return new AppError(401, `Invalid token. Please log in again!`);
+};
+const handleJWTExpiredError = () => {
+  return new AppError(401, `Your token has expired. Please log in again!`);
+};
 
 // development error
 const sendDebError = (res, err) => {
@@ -49,7 +55,7 @@ export const globalErrorController = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  // console.log('=====error details====', err);
+  console.log('=====error details====', err);
   // console.log('=====error name====', err.name);
   // console.log('=====error value====', err.value);
   // console.log('=====error path====', err.path);
@@ -62,6 +68,8 @@ export const globalErrorController = (err, req, res, next) => {
     if (err.name === 'CastError') err = handleCastErrorDB(err);
     if (err.code === 11000) err = handleDuplicateFieldsDB(err);
     if (err.name === 'ValidationError') err = handleValidationErrorDB(err);
+    if (err.name === 'JsonWebTokenError') err = handleJWTError();
+    if (err.name === 'TokenExpiredError') err = handleJWTExpiredError();
 
     sendProdError(res, err);
   }
