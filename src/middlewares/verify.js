@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { User } from '../models/userModel.js';
 import { AppError } from '../utils/appError.js';
 import { catchAsync } from '../utils/catchAsync.js';
-import { jwtSecretForLogin } from '../libs/secret.js';
+import { jwtSecret } from '../libs/secret.js';
 
 const verifyAuthentication = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
@@ -26,7 +26,7 @@ const verifyAuthentication = catchAsync(async (req, res, next) => {
   }
 
   // 2) Verification token
-  const decoded = await promisify(jwt.verify)(token, jwtSecretForLogin);
+  const decoded = await promisify(jwt.verify)(token, jwtSecret);
 
   // 3) Check if user still exists
   const currentUser = await User.findById(decoded.id);

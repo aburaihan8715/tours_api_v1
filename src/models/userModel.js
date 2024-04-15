@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -44,6 +45,8 @@ const userSchema = new mongoose.Schema({
   },
 
   passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 
   active: {
     type: Boolean,
@@ -67,6 +70,14 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// manipulate passwordChangedAt
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 // INSTANCE METHODS
 // compare password
 userSchema.methods.isPasswordCorrect = async function (
@@ -85,8 +96,21 @@ userSchema.methods.isPasswordChangedAfter = function (jwtIssueTime) {
     );
     return jwtIssueTime < passwordChangeTime;
   }
-
   return false;
+};
+
+// generate random token
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  this.passwordResetToken = hashedToken;
+  // console.log({ resetToken }, { hashedToken: this.passwordResetToken });
+  this.passwordResetExpires = Date.now() + 1000 * 60 * 10;
+  return resetToken;
 };
 
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
