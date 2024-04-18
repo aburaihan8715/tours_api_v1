@@ -23,7 +23,7 @@ const handleJWTExpiredError = () => {
 };
 
 // development error
-const sendDebError = (res, err) => {
+const sendDevError = (res, err) => {
   res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
@@ -61,7 +61,7 @@ export const globalErrorController = (err, req, res, next) => {
   // console.log('=====error path====', err.path);
 
   if (process.env.NODE_ENV === 'development') {
-    sendDebError(res, err);
+    sendDevError(res, err);
   } else if (process.env.NODE_ENV === 'production') {
     // NOTE: in this case no need to copy object, because per request error are different
     // let error = { ...err };

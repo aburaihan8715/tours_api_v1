@@ -2,53 +2,15 @@ import { User } from '../models/userModel.js';
 import { AppError } from '../utils/appError.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import { filterObj } from '../utils/filterObj.js';
+import * as factory from './factoryHandlers.js';
 
-// GET ALL USERS
-const getAllUsers = catchAsync(async (req, res) => {
-  const users = await User.find();
+const getAllUsers = factory.getAll(User);
+const getAUser = factory.getOne(User);
 
-  res.status(500).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
+// Do not update password in this route
+const updateAUser = factory.updateOne(User);
+const deleteAUser = factory.deleteOne(User);
 
-// CREATE A USER
-const createAUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined yet',
-  });
-};
-
-// GET A USER
-const getAUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined yet',
-  });
-};
-
-// UPDATE A USER
-const updateAUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined yet',
-  });
-};
-
-// DELETE A USER
-const deleteAUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined yet',
-  });
-};
-
-// UPDATE ME
 const updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -77,8 +39,6 @@ const updateMe = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-// DELETE ME
 const deleteMe = catchAsync(async (req, res) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
 
@@ -88,12 +48,4 @@ const deleteMe = catchAsync(async (req, res) => {
   });
 });
 
-export {
-  getAllUsers,
-  createAUser,
-  getAUser,
-  updateAUser,
-  deleteAUser,
-  updateMe,
-  deleteMe,
-};
+export { getAllUsers, getAUser, updateAUser, deleteAUser, updateMe, deleteMe };

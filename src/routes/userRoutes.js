@@ -17,10 +17,7 @@ router.patch(
   userControllers.deleteMe,
 );
 
-router
-  .route('/')
-  .get(userControllers.getAllUsers)
-  .post(userControllers.createAUser);
+router.get('/', userControllers.getAllUsers);
 router
   .route('/:id')
   .get(userControllers.getAUser)

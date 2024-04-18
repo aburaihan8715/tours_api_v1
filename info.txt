@@ -1,0 +1,7 @@
+// NOTE: Need to be make a summary for easy to revision
+
+// concept need to be revision
+1.Merge params
+(12,13,14 of 11 folder)
+2.setTourAndUserIds
+(16 of 11 folder)

@@ -19,27 +19,40 @@ class APIFeatures {
   }
 
   // 2) searching
-  search() {
+  search(...searchFields) {
     if (this.queryString.search) {
       const search = this.queryString.search;
       const searchRegexp = new RegExp(`.*${search}.*`, 'i');
 
       const queryBySearch = {
-        $or: [
-          { name: { $regex: searchRegexp } },
-          { email: { $regex: searchRegexp } },
-          { phone: { $regex: searchRegexp } },
-        ],
+        $or: searchFields.map((field) => ({
+          [field]: { $regex: searchRegexp },
+        })),
       };
       this.query = this.query.find(queryBySearch);
     }
     return this;
   }
 
+  // search() {
+  //   if (this.queryString.search) {
+  //     const search = this.queryString.search;
+  //     const searchRegexp = new RegExp(`.*${search}.*`, 'i');
+
+  //     const queryBySearch = {
+  //       $or: [
+  //         { name: { $regex: searchRegexp } },
+  //         { difficulty: { $regex: searchRegexp } },
+  //       ],
+  //     };
+  //     this.query = this.query.find(queryBySearch);
+  //   }
+  //   return this;
+  // }
+
   // 3) sorting
   sort() {
     if (this.queryString.sort) {
-      console.log(this.queryString.sort);
       const sortedBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortedBy);
     } else {

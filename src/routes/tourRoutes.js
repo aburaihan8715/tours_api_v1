@@ -2,16 +2,23 @@ import express from 'express';
 
 import * as tourControllers from '../controllers/tourControllers.js';
 import * as verify from '../middlewares/verify.js';
+import { reviewRouter } from './reviewRoutes.js';
 
 const router = express.Router();
 
-router
-  .route('/top-5-cheap')
-  .get(tourControllers.aliasTours, tourControllers.getAllTours);
+// POST /tours/123/reviews
+// GET /tours/123/reviews
+// GET /tours/123/reviews/123
 
-router.route('/tour-stats').get(tourControllers.getTourStats);
+router.use('/:tourId/reviews', reviewRouter);
 
-router.route('/monthly-plan/:year').get(tourControllers.getMonthlyPlan);
+router.get(
+  '/top-5-cheap',
+  tourControllers.aliasTours,
+  tourControllers.getAllTours,
+);
+router.get('/tour-stats', tourControllers.getTourStats);
+router.get('/monthly-plan/:year', tourControllers.getMonthlyPlan);
 
 router
   .route('/')

@@ -9,6 +9,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
+// DB CONNECTION
 mongoose.connect(mongoAtlasUri).then(() => console.log('DB is connected!'));
 
 // console.log(process.env);

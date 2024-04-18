@@ -11,6 +11,7 @@ import { AppError } from './utils/appError.js';
 import { tourRouter } from './routes/tourRoutes.js';
 import { userRouter } from './routes/userRoutes.js';
 import { authRouter } from './routes/authRoutes.js';
+import { reviewRouter } from './routes/reviewRoutes.js';
 
 const __dirname = path.resolve();
 export const app = express();
@@ -67,6 +68,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // UNHANDLED ROUTE HANDLER
 app.all('*', (req, res, next) => {
