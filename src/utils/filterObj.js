@@ -1,7 +1,7 @@
 export const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
-  Object.keys(obj).forEach((el) => {
-    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  Object.keys(obj).forEach((propName) => {
+    if (allowedFields.includes(propName)) newObj[propName] = obj[propName];
   });
   return newObj;
 };

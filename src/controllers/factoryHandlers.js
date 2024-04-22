@@ -78,6 +78,7 @@ const getAll = (Model) => {
       .sort()
       .limitFields()
       .paginate();
+    // NOTE: very important
     // const doc = await features.query.explain();
     const doc = await features.query;
 

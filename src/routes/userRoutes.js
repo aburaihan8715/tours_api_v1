@@ -3,19 +3,20 @@ import express from 'express';
 import * as userControllers from '../controllers/userControllers.js';
 import * as verify from '../middlewares/verify.js';
 
-// USER ROUTES
 const router = express.Router();
 
-router.patch(
-  '/updateMe',
-  verify.verifyAuthentication,
-  userControllers.updateMe,
-);
-router.patch(
-  '/deleteMe',
-  verify.verifyAuthentication,
-  userControllers.deleteMe,
-);
+// Authenticated all routes after this middleware
+// NOTE: This is important to understand
+router.use(verify.verifyAuthentication);
+
+router.get('/me', userControllers.getMe, userControllers.getAUser);
+router.patch('/updateMe', userControllers.updateMe);
+// NOTE: here delete means make user inactive not delete actually, so use patch
+router.patch('/deleteMe', userControllers.deleteMe);
+
+// Authorized all routes after this middleware
+// NOTE: This is important to understand
+router.use(verify.verifyAuthorization('admin'));
 
 router.get('/', userControllers.getAllUsers);
 router

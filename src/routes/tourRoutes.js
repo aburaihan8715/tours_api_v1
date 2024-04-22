@@ -18,16 +18,37 @@ router.get(
   tourControllers.getAllTours,
 );
 router.get('/tour-stats', tourControllers.getTourStats);
-router.get('/monthly-plan/:year', tourControllers.getMonthlyPlan);
+router.get(
+  '/monthly-plan/:year',
+  verify.verifyAuthentication,
+  verify.verifyAuthorization('admin', 'lead-guide', 'guide'),
+  tourControllers.getMonthlyPlan,
+);
+
+// tours-within?distance=233,center=34.124693, -118.113807&unit=mi
+// tours-within/233/center/34.124693, -118.113807/unit/mi
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourControllers.getToursWithin);
+
+router.route('/distances/:latlng/unit/:unit').get(tourControllers.getDistances);
 
 router
   .route('/')
-  .get(verify.verifyAuthentication, tourControllers.getAllTours)
-  .post(tourControllers.createATour);
+  .get(tourControllers.getAllTours)
+  .post(
+    verify.verifyAuthentication,
+    verify.verifyAuthorization('admin', 'lead-guide'),
+    tourControllers.createATour,
+  );
 router
   .route('/:id')
   .get(tourControllers.getATour)
-  .patch(tourControllers.updateATour)
+  .patch(
+    verify.verifyAuthentication,
+    verify.verifyAuthorization('admin', 'lead-guide'),
+    tourControllers.updateATour,
+  )
   .delete(
     verify.verifyAuthentication,
     verify.verifyAuthorization('admin'),

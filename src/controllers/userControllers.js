@@ -11,6 +11,11 @@ const getAUser = factory.getOne(User);
 const updateAUser = factory.updateOne(User);
 const deleteAUser = factory.deleteOne(User);
 
+const getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
 const updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -39,6 +44,7 @@ const updateMe = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 const deleteMe = catchAsync(async (req, res) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
 
@@ -48,4 +54,12 @@ const deleteMe = catchAsync(async (req, res) => {
   });
 });
 
-export { getAllUsers, getAUser, updateAUser, deleteAUser, updateMe, deleteMe };
+export {
+  getAllUsers,
+  getAUser,
+  updateAUser,
+  deleteAUser,
+  updateMe,
+  deleteMe,
+  getMe,
+};

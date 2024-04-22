@@ -9,11 +9,14 @@ import * as verify from '../middlewares/verify.js';
 
 const router = express.Router({ mergeParams: true });
 
+// Authenticated all routes after this middleware
+// NOTE: This is important to understand
+router.use(verify.verifyAuthentication);
+
 router
   .route('/')
   .get(reviewControllers.getAllReviews)
   .post(
-    verify.verifyAuthentication,
     verify.verifyAuthorization('user'),
     reviewControllers.setTourAndUserIds,
     reviewControllers.createAReview,
@@ -21,8 +24,14 @@ router
 
 router
   .route('/:id')
-  .delete(reviewControllers.deleteAReview)
-  .patch(reviewControllers.updateAReview)
-  .get(reviewControllers.getAReview);
+  .get(reviewControllers.getAReview)
+  .patch(
+    verify.verifyAuthorization('user', 'admin'),
+    reviewControllers.updateAReview,
+  )
+  .delete(
+    verify.verifyAuthorization('user', 'admin'),
+    reviewControllers.deleteAReview,
+  );
 
 export { router as reviewRouter };
