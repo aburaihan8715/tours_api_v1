@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { app } from './src/app.js';
-import { mongoAtlasUri, serverPort } from './src/libs/secret.js';
+import { app } from './app.js';
+import { mongoAtlasUri, serverPort } from './libs/secret.js';
 
 // UNCAUGHT EXCEPTION
 process.on('uncaughtException', (err) => {
@@ -10,7 +10,9 @@ process.on('uncaughtException', (err) => {
 });
 
 // DB CONNECTION
-mongoose.connect(mongoAtlasUri).then(() => console.log('DB is connected!'));
+mongoose
+  .connect(mongoAtlasUri)
+  .then(() => console.log('DB is connected!'));
 
 // console.log(process.env);
 const server = app.listen(serverPort, () => {
